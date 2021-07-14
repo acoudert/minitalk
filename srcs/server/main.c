@@ -37,6 +37,16 @@ void	clean(wchar_t *character, int *received_bits)
 	*received_bits = 0;
 }
 
+void	update_character_value(wchar_t *character)
+{
+	if (*character >= 12288 && *character < 14336)
+		*character ^= 12288;
+	else if (*character >= 917504 && *character < 983040)
+		*character ^= 918504;
+	else if (*character >= 62914560)
+		*character ^= 62914560;
+}
+
 void	sig_handler(int signum)
 {
 	static wchar_t		character = 0;
@@ -45,12 +55,25 @@ void	sig_handler(int signum)
 	received_bits += 1;
 	character <<= 1;
 	if (signum == SIGUSR1)
-		character += 1;
-	if ((character >= 240 && received_bits == 32)
-			|| (character >= 224 && received_bits == 24)
-			|| (character >= 192 && received_bits == 16)
-			|| (character <= 127 && received_bits == 8))
 	{
+		printf("1");
+		character += 1;
+	} else {
+		printf("0");
+	}
+	if (received_bits % 8 == 0)
+		printf(" ");
+	if (received_bits > 8 && (received_bits % 8 == 1 || received_bits % 8 == 2))
+	{
+		character >>= 1;
+	}
+	if ((received_bits == 8 && character <= 127)
+			|| (received_bits == 16 && character >= 12288 && character < 14336)
+			|| (received_bits == 24 && character >= 917504 && character < 983040)
+			|| (received_bits == 32))
+	{
+		printf("val = %d\n", character);
+		update_character_value(&character);
 		printf("%lc\n", character);
 		clean(&character, &received_bits);
 	}
@@ -63,7 +86,7 @@ int		main()
 	pid_to_str(getpid(), pid);
 	write(STDOUT_FILENO, pid, ft_strlen(pid));
 	write(STDOUT_FILENO,"\n", 1);
-	setlocale(LC_ALL, "");
+	setlocale(LC_CTYPE, "UTF-8");
 	signal(SIGUSR1, sig_handler);
 	signal(SIGUSR2, sig_handler);
 	while (1)

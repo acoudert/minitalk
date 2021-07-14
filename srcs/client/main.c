@@ -37,11 +37,13 @@ int		main(int ac, char **av)
 	{
 		if (av[2][0] & 128)
 		{
+			printf("1");
 			if (kill(pid, SIGUSR1) < 0)
 				return (4);
 		}
 		else
 		{
+			printf("0");
 			if (kill(pid, SIGUSR2) < 0)
 				return (4);
 		}
@@ -52,7 +54,11 @@ int		main(int ac, char **av)
 			i = 0;
 			av[2] = av[2] + 1;
 			if (!av[2][0])
+			{
+				printf("\n");
 				return (0);
+			}
+			printf(" ");
 		}
 		usleep(10000);
 	}
