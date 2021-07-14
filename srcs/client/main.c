@@ -37,21 +37,24 @@ int		main(int ac, char **av)
 	{
 		if (av[2][0] & 128)
 		{
-			printf("1");
-			kill(pid, SIGUSR1); // to protect
+			if (kill(pid, SIGUSR1) < 0)
+				return (4);
 		}
 		else
 		{
-			printf("0");
-			kill(pid, SIGUSR2);
+			if (kill(pid, SIGUSR2) < 0)
+				return (4);
 		}
 		av[2][0] <<= 1;
 		i += 1;
 		if (i == 8)
 		{
 			i = 0;
-			av[2][0] = av[2][1];
+			av[2] = av[2] + 1;
+			if (!av[2][0])
+				return (0);
 		}
 		usleep(10000);
 	}
+	return (1);
 }

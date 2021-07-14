@@ -31,31 +31,28 @@ void	pid_to_str(int n, char *pid)
 	}
 }
 
-void	clean(unsigned char *character, int *received_bits)
+void	clean(wchar_t *character, int *received_bits)
 {
-	character[0] = 0;
-	character[1] = 0;
-	character[2] = 0;
-	character[3] = 0;
+	*character = 0;
 	*received_bits = 0;
 }
 
 void	sig_handler(int signum)
 {
-	static unsigned char		character[5] = {0};
-	static int					received_bits = 0;
+	static wchar_t		character = 0;
+	static int			received_bits = 0;
 
 	received_bits += 1;
-	character[0] <<= 1;
+	character <<= 1;
 	if (signum == SIGUSR1)
-		character[0] += 1;
-	if ((character[0] >= 240 && received_bits == 32)
-			|| (character[0] >= 224 && received_bits == 24)
-			|| (character[0] >= 192 && received_bits == 16)
-			|| (received_bits == 8))
+		character += 1;
+	if ((character >= 240 && received_bits == 32)
+			|| (character >= 224 && received_bits == 24)
+			|| (character >= 192 && received_bits == 16)
+			|| (character <= 127 && received_bits == 8))
 	{
-		printf("%ls", (wchar_t*)character);
-		clean(character, &received_bits);
+		printf("%lc\n", character);
+		clean(&character, &received_bits);
 	}
 }
 
