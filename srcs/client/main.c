@@ -113,6 +113,11 @@ void	send_client_pid(int pid)
 	printf("\n");
 }
 
+void	ack(int signum)
+{
+	printf("Acknowledgement received\n");
+}
+
 int		main(int ac, char **av)
 {
 	int		i;
@@ -122,6 +127,7 @@ int		main(int ac, char **av)
 		return (1);
 	pid = ft_atoi(av[1]);
 	i = 0;
+	signal(SIGUSR1, ack);
 	while (av[2])
 	{
 		if (av[2][0] & 128)

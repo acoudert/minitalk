@@ -89,10 +89,11 @@ void	sig_handler(int signum)
 		else if (ack && character == 255)
 		{
 			printf("client_pid = %d\n", client_pid);
+			printf("Sending acknowledgement\n");
+			clean(&character, &received_bits);
+			kill(client_pid, SIGUSR1);
 			ack = 0;
 			client_pid = 0;
-			clean(&character, &received_bits);
-			//send_ack();
 			return ;
 		}
 		if (ack && character != 248)
