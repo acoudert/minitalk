@@ -3,7 +3,8 @@ NAME2      = client
 
 CC         = gcc
 CINCLUDES  = -I includes
-CFLAGS     = -Wall -Wextra -Werror $(CINCLUDES)
+#CFLAGS     = -Wall -Wextra -Werror $(CINCLUDES)
+CFLAGS     = $(CINCLUDES)
 RM         = rm -f
 
 DIR1       = srcs/server
