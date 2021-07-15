@@ -10,4 +10,10 @@
 # include <wchar.h>
 # include <locale.h>
 
+# include "utils.h"
+
+# define TIME	100
+
+char	send_sig(char *c, int pid);
+
 #endif

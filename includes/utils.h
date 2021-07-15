@@ -1,5 +1,5 @@
-#ifndef SERVER_H
-# define SERVER_H
+#ifndef UTILS_H
+# define UTILS_H
 
 # include <stdlib.h>
 # include <sys/types.h>
@@ -10,6 +10,8 @@
 # include <wchar.h>
 # include <locale.h>
 
-# include "utils.h"
+int		ft_atoi(const char *nptr);
+int		ft_strlen(const char *str);
+void	pid_to_str(int n, char *pid);
 
 #endif
